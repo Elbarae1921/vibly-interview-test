@@ -1,0 +1,42 @@
+<div class="flex flex-col md:flex-col gap-6 py-5 px-4 md:px-5 bg-white md:border-r border-[#f2f2f2] h-auto md:h-full">
+  <!-- Coach Profile -->
+  <div class="flex gap-3 items-center w-full">
+    <div class="relative shrink-0 w-[72px] h-[72px] rounded-full">
+      <img
+        [src]="session().host.avatar"
+        [alt]="session().host.name"
+        class="absolute inset-0 w-full h-full object-cover object-center rounded-full pointer-events-none"
+      />
+    </div>
+    <div class="flex-1 flex flex-col gap-2 leading-normal text-black whitespace-pre-wrap">
+      <p class="text-[17px] font-bold w-full">{{ session().host.name }}</p>
+      <p class="text-[14px] font-normal w-full">{{ session().host.title }}</p>
+    </div>
+  </div>
+
+  <!-- Session Details -->
+  <div class="flex flex-col gap-1.5 text-black whitespace-pre-wrap w-full">
+    <p class="text-[12px] font-semibold leading-tight w-full">{{ session()!.sessionType }}</p>
+    <p class="text-[17px] font-medium leading-[1.35] w-full">{{ session()!.sessionTitle }}</p>
+  </div>
+
+  <!-- Duration and Meeting Platform -->
+  <div class="flex flex-col gap-3">
+    <div class="flex gap-3 items-center">
+      <div class="overflow-hidden relative shrink-0 w-6 h-6">
+        <app-icon name="clock" [size]="24"></app-icon>
+      </div>
+      <p class="text-[13px] font-medium text-black leading-normal">
+        {{ session().duration }}min
+      </p>
+    </div>
+    <div class="flex gap-3 items-center">
+      <div class="relative shrink-0 w-6 h-[19.749px]">
+        <app-icon name="google-meet" [size]="24"></app-icon>
+      </div>
+      <p class="text-[13px] font-medium text-black leading-normal">
+        {{ session().meetingPlatform }}
+      </p>
+    </div>
+  </div>
+</div>

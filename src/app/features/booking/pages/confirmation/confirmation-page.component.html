@@ -1,0 +1,42 @@
+<!-- Confirmation Content -->
+<div class="w-full md:w-[680px] border-r-0 md:border-r border-[#f2f2f2] bg-white min-h-screen md:h-[576px] flex flex-col gap-8 items-start p-6 px-4 md:p-10">
+  <!-- Header -->
+  <div class="flex flex-col gap-3 w-full">
+    <div class="flex gap-2 items-start">
+      <p class="text-[21px] font-semibold text-black leading-tight">Confirm booking</p>
+    </div>
+
+    <!-- Booking Details -->
+    <div class="flex flex-col md:flex-row gap-4 md:gap-2 font-semibold leading-normal text-black whitespace-pre-wrap w-full">
+      <div class="flex-1 text-[15px]">
+        <p class="mb-0">{{ formattedSelectedDate() }}<br>{{ formattedTimeRange() }}</p>
+        <p class="text-[12px] font-normal hidden md:block">{{ timezone() }}</p>
+      </div>
+
+      <div class="flex-1 text-[15px]">
+        <p>{{ userName() }}<br><span class="font-normal">{{ userEmail() }}</span></p>
+      </div>
+    </div>
+
+    <p class="text-[12px] font-normal text-[#505050] leading-tight w-full whitespace-pre-wrap">
+      We will send you a confirmation email with the session details and meeting link.
+    </p>
+  </div>
+
+  <!-- Action Buttons -->
+  <div class="flex items-start justify-between w-full">
+    <app-button
+      variant="outlined"
+      (click)="onBack()"
+      [disabled]="isSubmitting()">
+      Back
+    </app-button>
+
+    <app-button
+      variant="primary"
+      (click)="onConfirm()"
+      [disabled]="isSubmitting()">
+      {{ isSubmitting() ? 'Confirming...' : 'Confirm' }}
+    </app-button>
+  </div>
+</div>

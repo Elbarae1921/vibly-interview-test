@@ -1,0 +1,6 @@
+export const environment = {
+  production: false,
+  graphqlEndpoint: 'YOUR_GRAPHQL_ENDPOINT_HERE',
+  graphqlApiKey: 'YOUR_GRAPHQL_API_KEY_HERE'
+};
+

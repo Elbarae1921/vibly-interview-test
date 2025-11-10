@@ -1,0 +1,100 @@
+<div class="flex flex-col gap-3 items-center justify-center w-full">
+  <!-- Month Navigation -->
+  <div class="flex gap-4 items-center justify-center">
+    <button
+      type="button"
+      (click)="previousMonth()"
+      class="flex items-center justify-center shrink-0 h-4 w-[9.209px] cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+      [disabled]="!interactive()"
+    >
+      <div class="flex-none rotate-180 scale-y-[-1] h-4 w-[9.209px]">
+        <img
+          src="/assets/icons/arrow-right.svg"
+          alt="Previous month"
+          class="block max-w-none w-full h-full"
+        />
+      </div>
+    </button>
+
+    <div
+      class="bg-[#efefef] flex gap-2.5 h-6 items-center justify-center rounded-full shrink-0 px-[18px]"
+    >
+      <p class="text-[12px] font-medium text-black text-center leading-normal whitespace-nowrap">
+        {{ formattedMonthYear }}
+      </p>
+    </div>
+
+    <button
+      type="button"
+      (click)="nextMonth()"
+      class="flex items-center justify-center shrink-0 h-4 w-[9.209px] cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+      [disabled]="!interactive()"
+    >
+      <img
+        src="/assets/icons/arrow-right.svg"
+        alt="Next month"
+        class="block max-w-none w-full h-full"
+      />
+    </button>
+  </div>
+
+  <!-- Calendar Grid -->
+  <div class="flex flex-col gap-2 items-center w-full">
+    <!-- Week days header -->
+    <div class="bg-white border-b border-[#e2e3eb] flex gap-1 items-start w-full">
+      @for (day of weekDays; track day) {
+        <div
+          class="flex flex-col items-center justify-center overflow-hidden p-2 pb-[7px]"
+        >
+          <div class="flex flex-col items-center justify-center w-8 h-[15px]">
+            <p class="text-[12px] font-medium text-[#979797] text-center leading-normal">
+              {{ day }}
+            </p>
+          </div>
+        </div>
+      }
+    </div>
+
+    <!-- Dates grid -->
+    <div class="flex flex-col gap-1 items-start w-full">
+      @for (row of getDateRows(); track $index) {
+        <div class="flex gap-[4px] items-stretch w-full">
+          @for (date of row; track date.getTime()) {
+            @if (isInCurrentMonth(date)) {
+              <div
+                [cn]="[
+                  'flex flex-col items-center justify-center overflow-hidden p-2 rounded-[4px] w-12 h-[34px]',
+                  {
+                    'bg-white border border-solid border-zinc-100': isDisabled(date),
+                    'bg-white border border-[#dee0e8] border-solid cursor-pointer': isAvailable(date) && interactive(),
+                    'bg-neutral-50': isPast(date) || (isAvailable(date) && !interactive()),
+                    'bg-black': isSelected(date),
+                  }
+                ]"
+                (click)="onDateClick(date)"
+              >
+                <div class="flex flex-col items-center justify-center w-8 h-[18px]">
+                  <p
+                    [cn]="[
+                      'text-[15px] font-medium leading-normal text-center',
+                      {
+                        'text-[rgba(0,0,0,0.3)]': isPast(date) || (isAvailable(date) && !interactive()),
+                        'text-[rgba(34,9,54,0.25)]': isDisabled(date),
+                        'text-[#220936]': isAvailable(date) && interactive(),
+                        'text-white': isSelected(date),
+                      }
+                    ]"
+                  >
+                    {{ date.getDate() }}
+                  </p>
+                </div>
+              </div>
+            } @else {
+              <div class="w-12 h-[34px] invisible"></div>
+            }
+          }
+        </div>
+      }
+    </div>
+  </div>
+</div>

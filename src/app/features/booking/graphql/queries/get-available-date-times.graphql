@@ -1,0 +1,10 @@
+query GetAvailableDateTimes($userId: ID!) {
+  getAvailableDateTimes(userId: $userId) {
+    date
+    times {
+      start
+      end
+    }
+  }
+}
+

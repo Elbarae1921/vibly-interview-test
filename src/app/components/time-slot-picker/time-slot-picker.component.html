@@ -1,0 +1,28 @@
+<div class="flex flex-col gap-1 w-full">
+  @for (slot of timeSlots(); track slot.time) {
+  <div
+    [cn]="[
+        'bg-white border border-[#dee0e8] border-solid box-border w-full h-[40px] md:h-[34px] relative rounded-[4px] shrink-0 py-2 px-3',
+        {
+          'bg-black border-black': isSelected(slot),
+          'cursor-pointer': slot.available,
+          'hover:bg-gray-50': slot.available && !isSelected(slot),
+        }
+      ]"
+    (click)="onTimeClick(slot)"
+  >
+    <div class="flex items-center justify-center overflow-hidden relative rounded-[inherit] w-full">
+      <p
+        [cn]="[
+            'text-[15px] font-semibold text-[#220936] leading-normal w-[57px] leading-[17px] h-[18px]',
+            {
+              'text-white': isSelected(slot),
+            }
+          ]"
+      >
+        {{ slot.time }}
+      </p>
+    </div>
+  </div>
+  }
+</div>

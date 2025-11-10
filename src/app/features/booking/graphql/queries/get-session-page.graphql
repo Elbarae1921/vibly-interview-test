@@ -1,0 +1,23 @@
+query GetSessionPage($id: ID!) {
+  getSessionPage(id: $id) {
+    date
+    time
+    duration
+    host {
+      firstName
+      lastName
+      photo
+      profession
+    }
+    user {
+      firstName
+      lastName
+      email
+      timeZone
+    }
+    service {
+      title
+    }
+  }
+}
+

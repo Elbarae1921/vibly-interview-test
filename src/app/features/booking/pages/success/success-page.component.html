@@ -1,0 +1,48 @@
+<div class="flex flex-col gap-4 items-center justify-center w-full h-full px-4 md:px-0">
+  <div class="flex flex-col gap-6 items-center md:px-4 py-10 w-full h-full">
+    <!-- Success Icon & Title -->
+    <div class="flex flex-col gap-2 items-center">
+      <div class="overflow-hidden relative shrink-0 w-[53px] h-[53px]">
+        <img src="/assets/icons/check-circle.svg" alt="" class="block max-w-none w-full h-full" />
+      </div>
+      <p class="text-[21px] font-semibold text-black leading-tight">Booking Successful</p>
+    </div>
+
+    <!-- Coach Profile -->
+    @if (sessionData()) {
+    <div
+      class="bg-white flex flex-col gap-5 items-center overflow-hidden px-4 py-0 rounded-[12px] shrink-0 w-full"
+    >
+      <div class="relative shrink-0 w-[120px] h-[120px] rounded-full">
+        <img
+          [src]="sessionData()!.host.avatar"
+          [alt]="sessionData()!.host.name"
+          class="absolute inset-0 w-full h-full object-cover object-center rounded-full pointer-events-none"
+        />
+      </div>
+      <div
+        class="flex flex-col gap-3 items-start leading-normal text-black text-center w-full whitespace-pre-wrap"
+      >
+        <p class="text-[17px] font-bold w-full">
+          {{ sessionData()!.host.name }}
+        </p>
+        <p class="text-[14px] font-normal w-full">
+          {{ sessionData()!.host.title }}
+        </p>
+      </div>
+    </div>
+    }
+
+    <!-- Divider -->
+    <div class="bg-[#ededed] h-[2px] shrink-0 w-full"></div>
+
+    <!-- Call to Action -->
+    <p class="text-[21px] font-semibold text-black leading-tight">
+      Take your growth to the next level
+    </p>
+
+    <a as="a" href="https://vibly.io" target="_blank" rel="noopener noreferrer">
+      <app-button variant="outlined"> Join Vibly </app-button>
+    </a>
+  </div>
+</div>

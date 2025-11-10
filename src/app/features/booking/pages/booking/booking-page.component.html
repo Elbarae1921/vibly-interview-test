@@ -1,0 +1,92 @@
+<ng-container>
+  <!-- Calendar Section - hide on mobile when date is selected -->
+  <div
+    [cn]="[
+      'w-full md:w-[400px] h-auto md:h-[576px] md:border-b-0 md:border-r border-[#f2f2f2] bg-white flex flex-col gap-4 items-start py-5 px-4 md:px-5 shrink-0',
+      { hidden: selectedDate(), 'md:flex': selectedDate() }
+    ]"
+  >
+    <div class="flex flex-col gap-2">
+      <p class="text-[15px] font-semibold text-black leading-tight">Select date:</p>
+      <p class="text-[12px] font-normal text-[#505050] leading-tight w-full md:w-[343px] whitespace-pre-wrap">Select a date to see the available time slots on that day</p>
+    </div>
+
+    <app-calendar
+      [availableDates]="availableDates()"
+      [selectedDate]="selectedDate()"
+      [currentMonth]="currentMonth()"
+      [interactive]="true"
+      (dateSelected)="onDateSelected($event)"
+      (monthChanged)="onMonthChanged($event)"
+    ></app-calendar>
+
+    <!-- Timezone Selector - desktop only in calendar section -->
+    <div class="hidden md:flex flex-col gap-[6.5px] w-full">
+      <p class="text-[12px] font-medium text-black leading-tight w-full whitespace-pre-wrap">Time Zone</p>
+      <div class="flex gap-2.5 items-center overflow-hidden w-full">
+        <p class="text-[12px] font-medium text-black leading-tight">
+          {{ timezone() }}
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Time Slots Section -->
+  @if (selectedDate()) {
+  <div class="w-full md:w-[280px] md:flex-1 md:shrink-0 md:basis-0 md:border-r border-[#f2f2f2] bg-white h-auto md:h-[576px] box-border flex flex-col">
+    <div class="flex flex-col gap-4 items-start px-4 md:px-[19px] pt-5 md:py-5 h-full">
+      <!-- Selected Date Badge - mobile only -->
+      <div class="md:hidden bg-[#efefef] flex gap-2.5 items-center justify-center px-6 py-3 rounded-[4px] shrink-0 w-full relative">
+        <button
+          (click)="onClearSelectedDate()"
+          class="absolute left-4 text-black"
+          aria-label="Clear selection"
+        >
+          <app-icon name="arrow-back" [size]="12"></app-icon>
+        </button>
+        <p class="text-[12px] font-semibold text-black leading-tight">
+          {{ formattedSelectedDate() }}
+        </p>
+      </div>
+
+      <!-- Timezone Section - mobile only -->
+      <div class="md:hidden flex flex-col gap-2 w-full">
+        <p class="text-[12px] font-medium text-black leading-tight">Time Zone</p>
+        <div class="flex gap-2.5 items-center">
+          <p class="text-[12px] font-medium text-black leading-tight">
+            {{ timezone() }}
+          </p>
+        </div>
+      </div>
+
+      <!-- Selected Date Badge - desktop only -->
+      <div
+        class="hidden md:flex bg-[#efefef] gap-2.5 items-center justify-center px-6 py-3 rounded-[4px] shrink-0 w-full"
+      >
+        <button
+          (click)="onClearSelectedDate()"
+          class="text-[12px] font-semibold text-black leading-tight"
+        >
+          {{ formattedSelectedDate() }}
+        </button>
+      </div>
+
+      <!-- Time Selector Header -->
+      <div class="flex flex-col gap-0.5 w-full">
+        <p class="text-[15px] font-semibold text-black leading-tight w-full whitespace-pre-wrap">Select time:</p>
+      </div>
+
+      <!-- Time Slots List -->
+      <div class="overflow-y-auto w-full flex-1">
+        <app-time-slot-picker
+          [timeSlots]="timeSlots()"
+          [selectedTime]="selectedTime()"
+          (timeSelected)="onTimeSelected($event)"
+        ></app-time-slot-picker>
+      </div>
+    </div>
+  </div>
+  } @else {
+  <div class="hidden md:flex flex-1 shrink-0 basis-0 bg-[#fbfbfb] h-[576px]"></div>
+  }
+</ng-container>

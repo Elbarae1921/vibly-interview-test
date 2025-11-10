@@ -1,0 +1,35 @@
+schema:
+  - '[YOUR_GRAPHQL_ENDPOINT]':
+      headers:
+        x-api-key: '[YOUR_GRAPHQL_API_KEY]'
+documents: 'src/**/*.graphql'
+generates:
+  src/app/graphql/generated/graphql.ts:
+    plugins:
+      - typescript
+      - typescript-operations
+      - typescript-apollo-angular
+    config:
+      withHooks: false
+      addExplicitOverride: true
+      avoidOptionals: false
+      scalars:
+        ID: string
+        String: string
+        Int: number
+        Float: number
+        Boolean: boolean
+        AWSDate: string
+        AWSTime: string
+        AWSDateTime: string
+        AWSTimestamp: number
+        AWSEmail: string
+        AWSJSON: string
+        AWSURL: string
+        AWSPhone: string
+        AWSIPAddress: string
+      namingConvention:
+        typeNames: pascal-case#pascalCase
+        enumValues: upper-case#upperCase
+      strictScalars: true
+

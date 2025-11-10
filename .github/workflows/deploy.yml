@@ -1,0 +1,78 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    name: Deploy to Server
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Deploy to server
+        env:
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+          DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
+        run: |
+          ssh -i ~/.ssh/id_rsa $SSH_USER@$SSH_HOST << 'EOF'
+            set -e
+
+            echo "📦 Navigating to deployment directory..."
+            cd ${{ secrets.DEPLOY_PATH }}
+
+            echo "🔄 Pulling latest changes..."
+            git pull origin main
+
+            echo "🛑 Stopping existing containers..."
+            docker-compose down || true
+
+            echo "🏗️  Building and starting containers..."
+            docker-compose up -d --build
+
+            echo "✅ Deployment completed successfully!"
+
+            echo "📊 Container status:"
+            docker-compose ps
+          EOF
+
+      - name: Verify deployment
+        env:
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+          DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
+        run: |
+          ssh -i ~/.ssh/id_rsa $SSH_USER@$SSH_HOST << 'EOF'
+            cd ${{ secrets.DEPLOY_PATH }}
+
+            echo "🔍 Checking service health..."
+
+            # Wait for services to be healthy
+            sleep 10
+
+            # Check if containers are running
+            if [ $(docker-compose ps -q | wc -l) -eq 1 ]; then
+              echo "✅ All containers are running"
+            else
+              echo "❌ Some containers failed to start"
+              docker-compose logs --tail=50
+              exit 1
+            fi
+          EOF
+
+      - name: Cleanup SSH
+        if: always()
+        run: |
+          rm -f ~/.ssh/id_rsa

@@ -1,0 +1,9 @@
+services:
+  vibly-test:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: vibly-test
+    ports:
+      - "8182:80"
+    restart: unless-stopped
